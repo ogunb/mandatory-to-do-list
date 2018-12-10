@@ -46,4 +46,26 @@
 	font-family: 'Lato';
 	font-size: 20px;
 	padding: 10px;
+	will-change: line-height;
+	animation: 500ms slideInOpacity ease-in forwards 1;
+}
+@keyframes slideUpOpacity {
+	from {
+		opacity: 1;
+		line-height: 1;
+	}
+	to {
+		opacity: 0;
+		line-height: 4;
+	}
+}
+@keyframes slideInOpacity {
+	from {
+		opacity: 0;
+		line-height: 4;
+	}
+	to {
+		opacity: 1;
+		line-height: 1;
+	}
 }

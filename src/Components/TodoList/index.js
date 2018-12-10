@@ -25,18 +25,21 @@ export class TodoList extends Component {
 	}
 	handleChange = id => {
 		const { list } = this.state;
-		[list[id].isDone] = [!list[id].isDone];
+		list[id].isDone = !list[id].isDone;
 		this.setState({
 			...this.state,
 			list
 		});
 	};
-	handleRemove = id => {
-		const { list } = this.state;
-		list.splice(id, 1);
-		this.setState({
-			...this.state,
-			list
+	handleRemove = (id, theListWrapper) => {
+		theListWrapper.current.style = 'animation: slideOut 1s forwards';
+		theListWrapper.current.addEventListener('animationend', () => {
+			const { list } = this.state;
+			list.splice(id, 1);
+			this.setState({
+				...this.state,
+				list
+			});
 		});
 	};
 	render() {

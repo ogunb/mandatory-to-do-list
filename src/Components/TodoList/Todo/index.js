@@ -12,10 +12,7 @@ class Todo extends Component {
 		handleChange(id);
 	};
 	handleRemove = id => {
-		this.theListWrapper.current.style = 'animation: slideOut 1s forwards';
-		this.theListWrapper.current.addEventListener('animationend', () =>
-			this.props.handleRemove(id)
-		);
+		this.props.handleRemove(id, this.theListWrapper);
 	};
 	render() {
 		const { content, isDone, id } = this.props;
