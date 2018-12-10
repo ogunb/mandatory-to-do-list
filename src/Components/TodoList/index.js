@@ -8,16 +8,13 @@ export class TodoList extends Component {
 	};
 
 	componentDidMount() {
-		const { list } = this.state;
-		if (localStorage.getItem('react-todo-list-8888') === undefined) {
-			localStorage.setItem('react-todo-list-8888', JSON.stringify(list));
+		if (localStorage.getItem('react-todo-list-8888') !== null) {
+			const local = localStorage.getItem('react-todo-list-8888');
+			this.setState({
+				...this.state,
+				list: JSON.parse(local)
+			});
 		}
-
-		const local = localStorage.getItem('react-todo-list-8888');
-		this.setState({
-			...this.state,
-			list: JSON.parse(local)
-		});
 	}
 
 	componentDidUpdate(prevProps) {

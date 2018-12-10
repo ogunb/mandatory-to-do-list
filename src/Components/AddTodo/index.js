@@ -8,7 +8,6 @@ class AddTodo extends Component {
 		this.newTodoForm = createRef();
 	}
 	onSubmit = e => {
-		console.log(this.newTodoForm);
 		e.preventDefault();
 
 		const { value: newTodo } = this.newTodoInput.current;
