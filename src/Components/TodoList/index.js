@@ -4,11 +4,22 @@ import Todo from './Todo';
 
 export class TodoList extends Component {
 	state = {
-		list: [
-			{ id: uuid(), content: 'Lorem ipsum dolor', isDone: false },
-			{ id: uuid(), content: 'dude no what no', isDone: true }
-		]
+		list: [{ id: uuid(), content: 'will do dis.', isDone: false }]
 	};
+
+	componentDidMount() {
+		const { list } = this.state;
+		if (localStorage.getItem('react-todo-list-8888') === undefined) {
+			localStorage.setItem('react-todo-list-8888', JSON.stringify(list));
+		}
+
+		const local = localStorage.getItem('react-todo-list-8888');
+		this.setState({
+			...this.state,
+			list: JSON.parse(local)
+		});
+	}
+
 	componentDidUpdate(prevProps) {
 		if (prevProps !== this.props) {
 			const { list } = this.state;
@@ -16,6 +27,7 @@ export class TodoList extends Component {
 
 			const properTodo = { id: uuid(), content: newTodo, isDone: false };
 			list.push(properTodo);
+			localStorage.setItem('react-todo-list-8888', JSON.stringify(list));
 
 			this.setState({
 				...this.state,
@@ -26,6 +38,7 @@ export class TodoList extends Component {
 	handleChange = id => {
 		const { list } = this.state;
 		list[id].isDone = !list[id].isDone;
+		localStorage.setItem('react-todo-list-8888', JSON.stringify(list));
 		this.setState({
 			...this.state,
 			list
@@ -36,6 +49,7 @@ export class TodoList extends Component {
 		theListWrapper.current.addEventListener('animationend', () => {
 			const { list } = this.state;
 			list.splice(id, 1);
+			localStorage.setItem('react-todo-list-8888', JSON.stringify(list));
 			this.setState({
 				...this.state,
 				list
