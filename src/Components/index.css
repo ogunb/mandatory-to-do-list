@@ -7,6 +7,7 @@
 	border-radius: 20px;
 	padding: 15px 15%;
 	box-sizing: border-box;
+	position: relative;
 }
 .header {
 	text-align: center;

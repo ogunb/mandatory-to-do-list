@@ -13,3 +13,6 @@ body {
 	background-image: linear-gradient(120deg, #d46bdf 0%, #a9dcff 100%);
 	color: #333333;
 }
+* {
+	outline: none;
+}
