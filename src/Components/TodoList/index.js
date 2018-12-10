@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import uuid from 'uuid';
 import Todo from './Todo';
 
 export class TodoList extends Component {
 	state = {
 		list: [
-			{ content: 'Lorem ipsum dolor', isDone: false },
-			{ content: 'dude no what no', isDone: true }
+			{ id: uuid(), content: 'Lorem ipsum dolor', isDone: false },
+			{ id: uuid(), content: 'dude no what no', isDone: true }
 		]
 	};
 	componentDidUpdate(prevProps) {
@@ -13,7 +14,7 @@ export class TodoList extends Component {
 			const { list } = this.state;
 			const { newTodo } = this.props;
 
-			const properTodo = { content: newTodo, isDone: false };
+			const properTodo = { id: uuid(), content: newTodo, isDone: false };
 			list.push(properTodo);
 
 			this.setState({
@@ -46,7 +47,7 @@ export class TodoList extends Component {
 					<Todo
 						content={todo.content}
 						isDone={todo.isDone}
-						key={index}
+						key={todo.id}
 						id={index}
 						handleChange={this.handleChange}
 						handleRemove={this.handleRemove}

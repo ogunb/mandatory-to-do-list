@@ -3,20 +3,27 @@ import DeleteTodo from './DeleteTodo';
 import './index.css';
 
 class Todo extends Component {
+	constructor() {
+		super();
+		this.theListWrapper = React.createRef();
+	}
 	onChange = () => {
 		const { id, handleChange } = this.props;
 		handleChange(id);
 	};
 	handleRemove = id => {
-		this.props.handleRemove(id);
+		this.theListWrapper.current.style = 'animation: slideOut 1s forwards';
+		this.theListWrapper.current.addEventListener('animationend', () =>
+			this.props.handleRemove(id)
+		);
 	};
 	render() {
 		const { content, isDone, id } = this.props;
 		let theList = 'theList';
 		if (isDone) theList += ' isDone';
 		return (
-			<div className="listWrapper">
-				<div className={theList} onClick={this.onChange} ref={this.theList}>
+			<div className="listWrapper" ref={this.theListWrapper}>
+				<div className={theList} onClick={this.onChange}>
 					<div>
 						<label className="theList__label" htmlFor="status">
 							{content}

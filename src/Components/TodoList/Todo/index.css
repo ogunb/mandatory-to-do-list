@@ -1,15 +1,15 @@
 .listWrapper {
 	position: relative;
+	animation: slideIn 500ms ease-out forwards 1;
+	transform: translateX(-30px);
+	opacity: 0;
+	transition: opacity 150ms ease-in, transform 300ms ease-out;
 }
 .theList {
 	display: grid;
 	grid-template-columns: 1fr auto auto;
 	margin: 30px 0;
-	transform: translateX(-30px);
-	opacity: 0;
-	transition: opacity 150ms ease-in, transform 300ms ease-out;
 	position: relative;
-	animation: slideIn 500ms ease-out forwards 1;
 }
 .theList,
 .theList__label,
@@ -115,6 +115,16 @@
 	100% {
 		opacity: 1;
 		transform: translateX(0);
+	}
+}
+@keyframes slideOut {
+	0% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+	100% {
+		opacity: 0;
+		transform: translateX(-30px);
 	}
 }
 @keyframes wobble {
