@@ -1,21 +1,26 @@
 class TodoList {
 	constructor() {
+		this.theLists = document.querySelector('.theLists');
 		this.list = [
 			{
-				id: Math.floor(Math.random() * Math.floor(165151)),
+				id: this.randomID(),
 				content: 'will do dis.',
 				isDone: false
 			},
 			{
-				id: Math.floor(Math.random() * Math.floor(165151)),
+				id: this.randomID(),
 				content: 'will do dis.',
 				isDone: true
 			}
 		];
-		this.todoDOM = this.list.map((todo, index) => this.getDOM(todo, index));
+		this.todoDOM = this.list.map((todo, index) => this._getDOM(todo, index));
 	}
 
-	getDOM(todo, index) {
+	randomID() {
+		return Math.floor(Math.random() * Math.floor(165151));
+	}
+
+	_getDOM(todo, index) {
 		return document.createRange()
 			.createContextualFragment(`<div class="listWrapper" data-id=${
 			todo.id
@@ -42,7 +47,7 @@ class TodoList {
     `);
 	}
 
-	setIsDone(e) {
+	_setIsDone(e) {
 		const index = e.currentTarget.dataset.index;
 		this.list[index].isDone = !this.list[index].isDone;
 		e.currentTarget.children[0].children[1].checked = this.list[index].isDone; // change input;
@@ -53,13 +58,35 @@ class TodoList {
 		}
 	}
 
+	_addTodo(e) {
+		e.preventDefault();
+		const { value } = e.target[0];
+		const properTodo = { id: this.randomID(), content: value, isDone: false };
+		this.list.push(properTodo);
+		const el = this._getDOM(properTodo, this.list.length - 1);
+		this.render({ el, type: 'add' });
+		e.target.reset();
+	}
+
+	render({ el, type }) {
+		switch (type) {
+			case 'add':
+				this.theLists.appendChild(el);
+			case 'remove':
+				el.remove();
+		}
+	}
+
 	preRender() {
-		const theLists = document.querySelector('.theLists');
-		this.todoDOM.forEach(todo => theLists.appendChild(todo));
+		this.todoDOM.forEach(todo => this.theLists.appendChild(todo));
+
 		const allTodo = document.querySelectorAll('.listWrapper');
 		allTodo.forEach(todo => {
-			todo.addEventListener('click', this.setIsDone.bind(this));
+			todo.addEventListener('click', this._setIsDone.bind(this));
 		});
+
+		const newTodo = document.querySelector('.newTodo');
+		newTodo.addEventListener('submit', this._addTodo.bind(this));
 	}
 }
 const todoList = new TodoList();
