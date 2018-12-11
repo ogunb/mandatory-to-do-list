@@ -73,7 +73,7 @@ class TodoList {
 		}
 	}
 
-	_addTodo(e) {
+	addTodo(e) {
 		e.preventDefault();
 		const { value } = e.target[0];
 		const properTodo = { id: this.randomID(), content: value, isDone: false };
@@ -83,7 +83,7 @@ class TodoList {
 		e.target.reset();
 	}
 
-	_deleteTodo(todo) {
+	deleteTodo(todo) {
 		const el = todo.parentElement;
 		const index = el.dataset.index;
 		this.list.splice(index, 1);
@@ -91,12 +91,24 @@ class TodoList {
 		this.render({ el, type: 'remove' });
 	}
 
+	_addEventForDeletion(todo) {
+		return todo.addEventListener('click', () => this.deleteTodo(todo));
+	}
+
 	render({ el, type }) {
 		switch (type) {
 			case 'add':
 				this.theLists.appendChild(el);
+				const deleteEl = document.querySelector(
+					`[data-index='${this.list.length - 1}']`
+				).children[1];
+				this._addEventForDeletion(deleteEl);
+				break;
 			case 'remove':
 				el.remove();
+				break;
+			default:
+				return;
 		}
 	}
 
@@ -109,12 +121,10 @@ class TodoList {
 		});
 
 		const newTodo = document.querySelector('.newTodo');
-		newTodo.addEventListener('submit', this._addTodo.bind(this));
+		newTodo.addEventListener('submit', this.addTodo.bind(this));
 
 		const removeTodo = document.querySelectorAll('.deleteTodo');
-		removeTodo.forEach(todo => {
-			todo.addEventListener('click', () => this._deleteTodo(todo));
-		});
+		removeTodo.forEach(todo => this._addEventForDeletion(todo));
 	}
 }
 const todoList = new TodoList();
