@@ -111,16 +111,20 @@ class TodoList {
 	_addEventForDeletion(todo) {
 		return todo.addEventListener('click', () => this.deleteTodo(todo));
 	}
+	_addEventForSettingDone(todo) {
+		return todo.addEventListener('click', e => this._setIsDone(e));
+	}
 
 	render({ el, type }) {
 		switch (type) {
 			case 'add':
 				this.theLists.appendChild(el);
-				const deleteEl = document.querySelector(
+				const newEl = document.querySelector(
 					`[data-index='${this.list.length - 1}']`
-				).children[1];
+				).children[0];
+				const deleteEl = newEl.children[1];
+				this._addEventForSettingDone(newEl);
 				this._addEventForDeletion(deleteEl);
-
 				break;
 			case 'remove':
 				el.remove();
@@ -144,9 +148,7 @@ class TodoList {
 		this.todoDOM.forEach(todo => this.theLists.appendChild(todo));
 
 		const allTodo = document.querySelectorAll('.theList');
-		allTodo.forEach(todo => {
-			todo.addEventListener('click', this._setIsDone.bind(this));
-		});
+		allTodo.forEach(todo => this._addEventForSettingDone(todo));
 
 		const newTodo = document.querySelector('.newTodo');
 		newTodo.addEventListener('submit', this.addTodo.bind(this));
