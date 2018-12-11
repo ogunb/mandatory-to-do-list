@@ -122,7 +122,9 @@ class TodoList {
 				const newEl = document.querySelector(
 					`[data-index='${this.list.length - 1}']`
 				).children[0];
-				const deleteEl = newEl.children[1];
+				const deleteEl = document.querySelector(
+					`[data-index='${this.list.length - 1}']`
+				).children[1];
 				this._addEventForSettingDone(newEl);
 				this._addEventForDeletion(deleteEl);
 				break;
