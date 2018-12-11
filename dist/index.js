@@ -22,10 +22,10 @@ class TodoList {
 
 	_getDOM(todo, index) {
 		return document.createRange()
-			.createContextualFragment(`<div class="listWrapper" data-id=${
-			todo.id
-		} data-index=${index}>
-      <div ${todo.isDone ? "class='theList isDone'" : "class='theList'"}>
+			.createContextualFragment(`<div class="listWrapper" data-index=${index}>
+      <div ${
+				todo.isDone ? "class='theList isDone'" : "class='theList'"
+			} data-index=${index}>
         <div>
           <label class="theList__label" for="status">
             ${todo.content}
@@ -43,6 +43,21 @@ class TodoList {
           </svg>
         </span>
       </div>
+      <button type="button" class="deleteTodo">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <g id="remove">
+            <path
+              id="trash-can"
+              d="M12 10h-1v6h1v-6zm-2 0h-1v6h1v-6zm4 0h-1v6h1v-6zm0-4v-1h-5v1h-3v3h1v7.966l1 1.031v-.074.077h6.984l.016-.018v.015l1-1.031v-7.966h1v-3h-3zm1 11h-7v-8h7v8zm1-9h-9v-1h9v1z"
+            />
+          </g>
+        </svg>
+      </button>
     </div>
     `);
 	}
@@ -50,11 +65,11 @@ class TodoList {
 	_setIsDone(e) {
 		const index = e.currentTarget.dataset.index;
 		this.list[index].isDone = !this.list[index].isDone;
-		e.currentTarget.children[0].children[1].checked = this.list[index].isDone; // change input;
+		e.currentTarget.children[1].checked = this.list[index].isDone; // change input;
 		if (this.list[index].isDone) {
-			e.currentTarget.children[0].classList.add('isDone');
+			e.currentTarget.classList.add('isDone');
 		} else {
-			e.currentTarget.children[0].classList.remove('isDone');
+			e.currentTarget.classList.remove('isDone');
 		}
 	}
 
@@ -66,6 +81,14 @@ class TodoList {
 		const el = this._getDOM(properTodo, this.list.length - 1);
 		this.render({ el, type: 'add' });
 		e.target.reset();
+	}
+
+	_deleteTodo(todo) {
+		const el = todo.parentElement;
+		const index = el.dataset.index;
+		this.list.splice(index, 1);
+		this.todoDOM.splice(index, 1);
+		this.render({ el, type: 'remove' });
 	}
 
 	render({ el, type }) {
@@ -80,13 +103,18 @@ class TodoList {
 	preRender() {
 		this.todoDOM.forEach(todo => this.theLists.appendChild(todo));
 
-		const allTodo = document.querySelectorAll('.listWrapper');
+		const allTodo = document.querySelectorAll('.theList');
 		allTodo.forEach(todo => {
 			todo.addEventListener('click', this._setIsDone.bind(this));
 		});
 
 		const newTodo = document.querySelector('.newTodo');
 		newTodo.addEventListener('submit', this._addTodo.bind(this));
+
+		const removeTodo = document.querySelectorAll('.deleteTodo');
+		removeTodo.forEach(todo => {
+			todo.addEventListener('click', () => this._deleteTodo(todo));
+		});
 	}
 }
 const todoList = new TodoList();
