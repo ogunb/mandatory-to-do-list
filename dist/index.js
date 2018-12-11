@@ -1,18 +1,16 @@
 class TodoList {
 	constructor() {
 		this.theLists = document.querySelector('.theLists');
-		this.list = [
-			{
-				id: this.randomID(),
-				content: 'will do dis.',
-				isDone: false
-			},
-			{
-				id: this.randomID(),
-				content: 'will do dis.',
-				isDone: true
-			}
-		];
+		this.list =
+			localStorage.getItem('mandatory-to-do-list-vanilla') !== null
+				? JSON.parse(localStorage.getItem('mandatory-to-do-list-vanilla'))
+				: [
+						{
+							id: this.randomID(),
+							content: 'will do dis.',
+							isDone: false
+						}
+				  ];
 		this.todoDOM = this.list.map((todo, index) => this._setDOM(todo, index));
 	}
 
@@ -65,6 +63,10 @@ class TodoList {
 	_setIsDone(e) {
 		const index = e.currentTarget.dataset.index;
 		this.list[index].isDone = !this.list[index].isDone;
+		localStorage.setItem(
+			'mandatory-to-do-list-vanilla',
+			JSON.stringify(this.list)
+		);
 		e.currentTarget.children[1].checked = this.list[index].isDone; // change input;
 		if (this.list[index].isDone) {
 			e.currentTarget.classList.add('isDone');
@@ -124,11 +126,21 @@ class TodoList {
 				el.remove();
 				break;
 			default:
-				return;
+				break;
 		}
+		localStorage.setItem(
+			'mandatory-to-do-list-vanilla',
+			JSON.stringify(this.list)
+		);
 	}
 
 	preRender() {
+		if (localStorage.getItem('mandatory-to-do-list-vanilla') === null) {
+			localStorage.setItem(
+				'mandatory-to-do-list-vanilla',
+				JSON.stringify(this.list)
+			);
+		}
 		this.todoDOM.forEach(todo => this.theLists.appendChild(todo));
 
 		const allTodo = document.querySelectorAll('.theList');
