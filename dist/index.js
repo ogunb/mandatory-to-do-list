@@ -13,14 +13,14 @@ class TodoList {
 				isDone: true
 			}
 		];
-		this.todoDOM = this.list.map((todo, index) => this._getDOM(todo, index));
+		this.todoDOM = this.list.map((todo, index) => this._setDOM(todo, index));
 	}
 
 	randomID() {
 		return Math.floor(Math.random() * Math.floor(165151));
 	}
 
-	_getDOM(todo, index) {
+	_setDOM(todo, index) {
 		return document.createRange()
 			.createContextualFragment(`<div class="listWrapper" data-index=${index}>
       <div ${
@@ -76,19 +76,34 @@ class TodoList {
 	addTodo(e) {
 		e.preventDefault();
 		const { value } = e.target[0];
+		if (value === '') return;
+
+		const formInput = e.target.children[0];
+		formInput.style = 'animation: 500ms slideUpOpacity ease-in forwards 1;';
+		formInput.addEventListener('animationend', slideIn);
+		function slideIn(e) {
+			formInput.removeEventListener('animationend', slideIn);
+			formInput.style = '';
+		}
+
 		const properTodo = { id: this.randomID(), content: value, isDone: false };
 		this.list.push(properTodo);
-		const el = this._getDOM(properTodo, this.list.length - 1);
+		const el = this._setDOM(properTodo, this.list.length - 1);
 		this.render({ el, type: 'add' });
+
 		e.target.reset();
 	}
 
 	deleteTodo(todo) {
 		const el = todo.parentElement;
-		const index = el.dataset.index;
-		this.list.splice(index, 1);
-		this.todoDOM.splice(index, 1);
-		this.render({ el, type: 'remove' });
+		el.style = 'animation: 500ms slideOut ease-out forwards 1;';
+		el.addEventListener('animationend', slideOut.bind(this));
+		function slideOut(e) {
+			const index = el.dataset.index;
+			this.list.splice(index, 1);
+			this.todoDOM.splice(index, 1);
+			this.render({ el, type: 'remove' });
+		}
 	}
 
 	_addEventForDeletion(todo) {
@@ -103,6 +118,7 @@ class TodoList {
 					`[data-index='${this.list.length - 1}']`
 				).children[1];
 				this._addEventForDeletion(deleteEl);
+
 				break;
 			case 'remove':
 				el.remove();
@@ -127,5 +143,13 @@ class TodoList {
 		removeTodo.forEach(todo => this._addEventForDeletion(todo));
 	}
 }
-const todoList = new TodoList();
-todoList.preRender();
+
+function getDay() {
+	// TODO: fix: todays date is hard coded.
+}
+
+// INIT
+(function() {
+	const todoList = new TodoList();
+	todoList.preRender();
+})();

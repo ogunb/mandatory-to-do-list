@@ -148,12 +148,12 @@ body {
 }
 @keyframes slideUpOpacity {
 	from {
-		opacity: 1;
 		line-height: 1;
+		opacity: 1;
 	}
 	to {
-		opacity: 0;
 		line-height: 4;
+		opacity: 0;
 	}
 }
 @keyframes slideInOpacity {
