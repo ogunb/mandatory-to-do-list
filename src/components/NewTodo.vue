@@ -1,0 +1,109 @@
+<template>
+  <form class="newTodo" @submit.prevent="onSubmit">
+    <input type="text" class="newTodo__input" placeholder="add to do..." autofocus v-model="todo">
+    <button type="submit" class="newTodo__button">+</button>
+  </form>
+</template>
+
+<script>
+export default {
+  name: "NewTodo",
+  props: ["addTodo"],
+  data: function() {
+    return {
+      todo: ""
+    };
+  },
+  methods: {
+    onSubmit: function(e) {
+      this.addTodo(this.todo);
+      const input = e.currentTarget[0];
+      input.classList.add("sending");
+      function inputAnimation() {
+        input.classList.remove("sending");
+        input.removeEventListener("animationend", inputAnimation);
+        return (this.todo = "");
+      }
+      input.addEventListener("animationend", inputAnimation.bind(this));
+    }
+  }
+};
+</script>
+
+<style>
+.newTodo {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+.newTodo__button {
+  position: relative;
+  background: #d46bdf;
+  margin-top: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 360px;
+  border: none;
+  color: #f7f7f7;
+  font-size: 25px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.newTodo__button::before {
+  content: "";
+  z-index: -1;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border-radius: 360px;
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.3);
+  transform: scale(0.7);
+  opacity: 0.2;
+  transition: opacity 300ms ease-in, transform 500ms ease-out;
+}
+.newTodo__button:hover::before {
+  opacity: 0.7;
+  transform: scale(0.8);
+}
+.newTodo__input {
+  border: none;
+  border-bottom: 1px solid #808080;
+  font-family: "Lato";
+  font-size: 20px;
+  padding: 10px;
+  will-change: line-height;
+  animation: 500ms slideInOpacity ease-in forwards 1;
+}
+.newTodo__input.sending {
+  animation: 500ms slideUpOpacity ease-in forwards 1;
+}
+@keyframes slideUpOpacity {
+  from {
+    line-height: 1;
+    opacity: 1;
+  }
+  to {
+    line-height: 4;
+    opacity: 0;
+  }
+}
+@keyframes slideInOpacity {
+  from {
+    opacity: 0;
+    line-height: 4;
+  }
+  to {
+    opacity: 1;
+    line-height: 1;
+  }
+}
+</style>
+

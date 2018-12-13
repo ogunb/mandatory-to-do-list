@@ -2,19 +2,41 @@
   <div id="app">
     <today></today>
     <h4 class="header">To do List</h4>
-    <todo-list></todo-list>
+    <todo-list v-bind="{ list }"></todo-list>
+    <new-todo v-bind="{ addTodo }"></new-todo>
   </div>
 </template>
 
 <script>
+import uuid from "uuid";
 import today from "./components/today.vue";
 import TodoList from "./components/TodoList.vue";
+import NewTodo from "./components/NewTodo.vue";
 
 export default {
   name: "app",
   components: {
     today,
-    TodoList
+    TodoList,
+    NewTodo
+  },
+  data: function() {
+    return {
+      list: [{ id: uuid(), content: "will do dis.", isDone: false }]
+    };
+  },
+  methods: {
+    addTodo: function(todo) {
+      const properTodo = { id: uuid(), content: todo, isDone: false };
+      this.list.push(properTodo);
+      localStorage.setItem("vue-todo-list-8888", JSON.stringify(this.list));
+    }
+  },
+  beforeMount: function() {
+    if (localStorage.getItem("vue-todo-list-8888") !== null) {
+      const local = localStorage.getItem("vue-todo-list-8888");
+      this.list = JSON.parse(local);
+    }
   }
 };
 </script>
