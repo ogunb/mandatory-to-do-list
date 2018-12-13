@@ -16,6 +16,7 @@ export default {
   },
   methods: {
     onSubmit: function(e) {
+      if (this.todo === "") return;
       this.addTodo(this.todo);
       const input = e.currentTarget[0];
       input.classList.add("sending");
@@ -42,7 +43,7 @@ export default {
 }
 .newTodo__button {
   position: relative;
-  background: #d46bdf;
+  background: #42b883;
   margin-top: 20px;
   width: 50px;
   height: 50px;

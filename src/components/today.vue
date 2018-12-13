@@ -26,7 +26,7 @@ export default {
 
 <style scoped>
 .toDay {
-  color: #d46bdf;
+  color: #42b883;
   text-align: center;
   position: relative;
   margin: 0;

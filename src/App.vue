@@ -54,7 +54,7 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 20px;
-  background-image: linear-gradient(120deg, #d46bdf 0%, #a9dcff 100%);
+  background-image: linear-gradient(120deg, #42b883 0%, #35495e 100%);
   color: #333333;
 }
 * {

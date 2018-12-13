@@ -31,7 +31,7 @@ export default {
   cursor: pointer;
 }
 .deleteTodo svg {
-  fill: #a9dcff;
+  fill: #35495e;
 }
 .theListWrapper:hover .deleteTodo {
   visibility: visible;

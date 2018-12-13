@@ -129,13 +129,13 @@ export default {
   opacity: 1;
 }
 .theList:hover .check svg {
-  stroke: #d46bdf;
+  stroke: #42b883;
 }
 .listWrapper:hover .deleteTodo {
   animation: wobble 500ms ease-in-out forwards;
 }
 .theList.isDone > .check svg {
-  stroke: #d46bdf;
+  stroke: #42b883;
 }
 .theList.isDone > .check svg path {
   stroke-dashoffset: 60;
