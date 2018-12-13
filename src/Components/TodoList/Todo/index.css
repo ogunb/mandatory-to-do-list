@@ -90,13 +90,13 @@
 	opacity: 1;
 }
 .theList:hover .check svg {
-	stroke: #d46bdf;
+	stroke: #00d8ff;
 }
 .listWrapper:hover .deleteTodo {
 	animation: wobble 500ms ease-in-out forwards;
 }
 .theList.isDone > .check svg {
-	stroke: #d46bdf;
+	stroke: #00d8ff;
 }
 .theList.isDone > .check svg path {
 	stroke-dashoffset: 60;

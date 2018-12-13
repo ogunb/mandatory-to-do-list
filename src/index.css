@@ -10,7 +10,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	font-size: 20px;
-	background-image: linear-gradient(120deg, #d46bdf 0%, #a9dcff 100%);
+	background-image: linear-gradient(120deg, #00d8ff 0%, #282c34 100%);
 	color: #333333;
 }
 * {
