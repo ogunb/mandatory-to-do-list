@@ -10,7 +10,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	font-size: 20px;
-	background-image: linear-gradient(120deg, #f7df1e 0%, #f7f7f7 100%);
+	background-image: linear-gradient(120deg, #d46bdf 0%, #a9dcff 100%);
 	color: #333333;
 }
 * {
@@ -78,7 +78,7 @@ body {
 	margin: 50px 0;
 }
 .toDay {
-	color: #f7df1e;
+	color: #d46bdf;
 	text-align: center;
 	position: relative;
 	margin: 0;
@@ -106,7 +106,7 @@ body {
 }
 .newTodo__button {
 	position: relative;
-	background: #f7df1e;
+	background: #d46bdf;
 	margin-top: 20px;
 	width: 50px;
 	height: 50px;
@@ -259,13 +259,13 @@ body {
 	opacity: 1;
 }
 .theList:hover .check svg {
-	stroke: #f7df1e;
+	stroke: #d46bdf;
 }
 .listWrapper:hover .deleteTodo {
 	animation: wobble 500ms ease-in-out forwards;
 }
 .theList.isDone > .check svg {
-	stroke: #f7df1e;
+	stroke: #d46bdf;
 }
 .theList.isDone > .check svg path {
 	stroke-dashoffset: 60;
@@ -338,7 +338,7 @@ body {
 	cursor: pointer;
 }
 .deleteTodo svg {
-	fill: #808080;
+	fill: #a9dcff;
 }
 .theListWrapper:hover .deleteTodo {
 	visibility: visible;
