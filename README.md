@@ -1,3 +1,4 @@
-# Mandatory to do list with vanilla js.
+# Mandatory to do list.
 
-[Check it out.](https://dist-3b6ep5vcs.now.sh/)
+_I've heard one can't become a true developer if he/she haven't developed a to-do list._
+This is the repo for the same app with diff stuff for practice.
