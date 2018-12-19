@@ -161,11 +161,20 @@ class TodoList {
 }
 
 function getDay() {
-	// TODO: fix: todays date is hard coded.
+	const todayNode = document.querySelector('.toDay');
+	const options = {
+		weekday: 'long',
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric'
+	};
+	const today = new Date();
+	todayNode.textContent = today.toLocaleDateString('en-GB', options);
 }
 
 // INIT
 (function() {
 	const todoList = new TodoList();
 	todoList.preRender();
+	getDay();
 })();
