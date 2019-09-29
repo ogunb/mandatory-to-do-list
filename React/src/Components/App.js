@@ -8,9 +8,11 @@ class App extends Component {
 	state = {
 		newTodo: {}
 	};
+
 	handleNewTodo = newTodo => {
 		this.setState({ ...this.state, newTodo });
 	};
+
 	render() {
 		return (
 			<div className="App">
