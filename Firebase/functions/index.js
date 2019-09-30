@@ -23,14 +23,14 @@ app.post('/', async (req, res) => {
     try {
         const { content } = req.body;
         const pushRef = todos.push();
-
-        await pushRef.set({
+        const newTodo = {
             id: pushRef.key,
             content,
             isDone: false,
-        });
+        };
+        await pushRef.set(newTodo);
 
-        res.send({});
+        res.send(newTodo);
     } catch (e) {
         console.error(e.message);
         res.send(e.message);
@@ -45,12 +45,13 @@ app.put('/:id', async (req, res) => {
 
         if (todoVal) {
             const { id, content, isDone } = todoVal;
-            todoRef.set({
+            const newTodo = {
                 id,
                 content,
                 isDone: !isDone,
-            });
-            res.send({});
+            };
+            todoRef.set(newTodo);
+            res.send(newTodo);
         } else {
             res.status(404).send({ error: 'no such thing with that id exists.' });
         }
