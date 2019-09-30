@@ -1,58 +1,60 @@
 import React, { Component } from 'react';
-import uuid from 'uuid';
 import Todo from './Todo';
+
+import { fetchAllTodos, createTodo, updateTodoStatus, deleteTodo } from '../../Services/Todo.service';
 
 export class TodoList extends Component {
 	state = {
-		list: [{ id: uuid(), content: 'will do dis.', isDone: false }]
+		list: [],
 	};
 
-	componentDidMount() {
-		if (localStorage.getItem('react-todo-list-8888') !== null) {
-			const local = localStorage.getItem('react-todo-list-8888');
-			this.setState({
-				...this.state,
-				list: JSON.parse(local)
-			});
-		}
-	}
+	async componentDidMount() {
+		const todos = await fetchAllTodos();
 
-	componentDidUpdate(prevProps) {
+		this.setState({
+			...this.state,
+			list: todos,
+		});
+	};
+
+	async componentDidUpdate(prevProps) {
 		if (prevProps !== this.props) {
-			const { list } = this.state;
 			const { newTodo } = this.props;
 
-			const properTodo = { id: uuid(), content: newTodo, isDone: false };
-			list.push(properTodo);
-			localStorage.setItem('react-todo-list-8888', JSON.stringify(list));
+			await createTodo(newTodo);
+
+			const list = await fetchAllTodos();
 
 			this.setState({
 				...this.state,
 				list
 			});
 		}
-	}
-	handleChange = id => {
-		const { list } = this.state;
-		list[id].isDone = !list[id].isDone;
-		localStorage.setItem('react-todo-list-8888', JSON.stringify(list));
+	};
+
+	handleChange = async index => {
+		await updateTodoStatus(this.state.list[index].id);
+		const list = await fetchAllTodos();
+
 		this.setState({
 			...this.state,
 			list
 		});
 	};
-	handleRemove = (id, theListWrapper) => {
+
+	handleRemove = (index, theListWrapper) => {
 		theListWrapper.current.style = 'animation: slideOut 1s forwards';
-		theListWrapper.current.addEventListener('animationend', () => {
-			const { list } = this.state;
-			list.splice(id, 1);
-			localStorage.setItem('react-todo-list-8888', JSON.stringify(list));
+		theListWrapper.current.addEventListener('animationend', async () => {
+			await deleteTodo(this.state.list[index].id);
+			const list = await fetchAllTodos();
+
 			this.setState({
 				...this.state,
 				list
 			});
 		});
 	};
+
 	render() {
 		const { list } = this.state;
 		return (
