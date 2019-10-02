@@ -1,17 +1,35 @@
+class TodoService {
+	constructor() {
+		this.baseURL = 'https://us-central1-mandatory-to-do-list.cloudfunctions.net';
+	}
+
+	async fetchAllTodos() {
+		const data = await (await fetch(`${this.baseURL}/todos`, { method: 'GET' })).json();
+		return data;
+	}
+
+	async createTodo(content) {
+		const { data } = await (await fetch(`${this.baseURL}/todos`, { method: 'POST', content })).json();
+		return data;
+	}
+
+	async updateTodoStatus(id) {
+		const { data } = await fetch(`${this.baseURL}/todos/${id}`, { method: 'PUT' });
+		return data;
+	}
+
+	async deleteTodo(id) {
+		const { data } = await fetch(`${this.baseURL}/todos/${id}`, { method: 'DELETE' });
+		return data;
+	}
+}
+
 class TodoList {
 	constructor() {
+		this.todoService = new TodoService();
 		this.theLists = document.querySelector('.theLists');
-		this.list =
-			localStorage.getItem('mandatory-to-do-list-vanilla') !== null
-				? JSON.parse(localStorage.getItem('mandatory-to-do-list-vanilla'))
-				: [
-						{
-							id: this.randomID(),
-							content: 'will do dis.',
-							isDone: false
-						}
-				  ];
-		this.todoDOM = this.list.map((todo, index) => this._setDOM(todo, index));
+		this.list = [];
+		this.todoDOM = [];
 	}
 
 	randomID() {
@@ -19,11 +37,8 @@ class TodoList {
 	}
 
 	_setDOM(todo, index) {
-		return document.createRange()
-			.createContextualFragment(`<div class="listWrapper" data-index=${index}>
-      <div ${
-				todo.isDone ? "class='theList isDone'" : "class='theList'"
-			} data-index=${index}>
+		return document.createRange().createContextualFragment(`<div class="listWrapper" data-index=${index}>
+      <div ${todo.isDone ? "class='theList isDone'" : "class='theList'"} data-index=${index}>
         <div>
           <label class="theList__label" for="status">
             ${todo.content}
@@ -63,11 +78,9 @@ class TodoList {
 	_setIsDone(e) {
 		const index = e.currentTarget.dataset.index;
 		this.list[index].isDone = !this.list[index].isDone;
-		localStorage.setItem(
-			'mandatory-to-do-list-vanilla',
-			JSON.stringify(this.list)
-		);
+		this.todoService.updateTodoStatus(this.list[index].id);
 		e.currentTarget.children[1].checked = this.list[index].isDone; // change input;
+
 		if (this.list[index].isDone) {
 			e.currentTarget.classList.add('isDone');
 		} else {
@@ -75,7 +88,7 @@ class TodoList {
 		}
 	}
 
-	addTodo(e) {
+	async addTodo(e) {
 		e.preventDefault();
 		const { value } = e.target[0];
 		if (value === '') return;
@@ -83,14 +96,15 @@ class TodoList {
 		const formInput = e.target.children[0];
 		formInput.style = 'animation: 500ms slideUpOpacity ease-in forwards 1;';
 		formInput.addEventListener('animationend', slideIn);
+
 		function slideIn(e) {
 			formInput.removeEventListener('animationend', slideIn);
 			formInput.style = '';
 		}
 
-		const properTodo = { id: this.randomID(), content: value, isDone: false };
-		this.list.push(properTodo);
-		const el = this._setDOM(properTodo, this.list.length - 1);
+		const todo = await this.todoService.createTodo(value);
+		this.list.push(todo);
+		const el = this._setDOM(todo, this.list.length - 1);
 		this.render({ el, type: 'add' });
 
 		e.target.reset();
@@ -100,10 +114,12 @@ class TodoList {
 		const el = todo.parentElement;
 		el.style = 'animation: 500ms slideOut ease-out forwards 1;';
 		el.addEventListener('animationend', slideOut.bind(this));
+
 		function slideOut(e) {
 			const index = el.dataset.index;
 			this.list.splice(index, 1);
 			this.todoDOM.splice(index, 1);
+			this.todoService.deleteTodo(this.list[index].id);
 			this.render({ el, type: 'remove' });
 		}
 	}
@@ -119,12 +135,11 @@ class TodoList {
 		switch (type) {
 			case 'add':
 				this.theLists.appendChild(el);
-				const newEl = document.querySelector(
-					`[data-index='${this.list.length - 1}']`
-				).children[0];
-				const deleteEl = document.querySelector(
-					`[data-index='${this.list.length - 1}']`
-				).children[1];
+
+				const newEl = document.querySelector(`[data-index='${this.list.length - 1}']`).children[0];
+
+				const deleteEl = document.querySelector(`[data-index='${this.list.length - 1}']`).children[1];
+
 				this._addEventForSettingDone(newEl);
 				this._addEventForDeletion(deleteEl);
 				break;
@@ -134,19 +149,11 @@ class TodoList {
 			default:
 				break;
 		}
-		localStorage.setItem(
-			'mandatory-to-do-list-vanilla',
-			JSON.stringify(this.list)
-		);
 	}
 
-	preRender() {
-		if (localStorage.getItem('mandatory-to-do-list-vanilla') === null) {
-			localStorage.setItem(
-				'mandatory-to-do-list-vanilla',
-				JSON.stringify(this.list)
-			);
-		}
+	async preRender() {
+		this.list = await this.todoService.fetchAllTodos();
+		this.todoDOM = this.list.map((todo, index) => this._setDOM(todo, index));
 		this.todoDOM.forEach(todo => this.theLists.appendChild(todo));
 
 		const allTodo = document.querySelectorAll('.theList');
@@ -166,14 +173,14 @@ function getDay() {
 		weekday: 'long',
 		year: 'numeric',
 		month: 'long',
-		day: 'numeric'
+		day: 'numeric',
 	};
 	const today = new Date();
 	todayNode.textContent = today.toLocaleDateString('en-GB', options);
 }
 
 // INIT
-(function() {
+(function () {
 	const todoList = new TodoList();
 	todoList.preRender();
 	getDay();
