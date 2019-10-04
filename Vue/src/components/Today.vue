@@ -5,11 +5,13 @@
 <script>
 export default {
   name: "Today",
+
   data: function() {
     return {
-      today: new Date()
+      today: new Date(),
     };
   },
+
   computed: {
     toLocaleDate: function() {
       const options = {
@@ -18,6 +20,7 @@ export default {
         month: "long",
         day: "numeric"
       };
+
       return this.today.toLocaleDateString("en-GB", options);
     }
   }

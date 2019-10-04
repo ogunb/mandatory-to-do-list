@@ -2,42 +2,43 @@
   <div id="app">
     <today></today>
     <h4 class="header">To do List</h4>
-    <todo-list v-bind="{ list }"></todo-list>
-    <new-todo v-bind="{ addTodo }"></new-todo>
+    <todo-list :list="list" />
+    <new-todo :add-todo="addTodo" />
   </div>
 </template>
 
 <script>
-import uuid from "uuid";
-import today from "./components/today.vue";
+import Today from "./components/Today.vue";
 import TodoList from "./components/TodoList.vue";
 import NewTodo from "./components/NewTodo.vue";
 
+import { fetchAllTodos, createTodo } from './Services/Todo.service.js'
+
 export default {
   name: "app",
+
   components: {
-    today,
+    Today,
     TodoList,
     NewTodo
   },
-  data: function() {
+
+  data() {
     return {
-      list: [{ id: uuid(), content: "will do dis.", isDone: false }]
+      list: []
     };
   },
+
+  async created() {
+    this.list = await fetchAllTodos();
+  },
+
   methods: {
-    addTodo: function(todo) {
-      const properTodo = { id: uuid(), content: todo, isDone: false };
-      this.list.push(properTodo);
-      localStorage.setItem("vue-todo-list-8888", JSON.stringify(this.list));
+    async addTodo(todo) {
+      await createTodo(todo);
+      this.list = await fetchAllTodos();
     }
   },
-  beforeMount: function() {
-    if (localStorage.getItem("vue-todo-list-8888") !== null) {
-      const local = localStorage.getItem("vue-todo-list-8888");
-      this.list = JSON.parse(local);
-    }
-  }
 };
 </script>
 

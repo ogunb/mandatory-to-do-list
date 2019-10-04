@@ -8,25 +8,30 @@
 <script>
 export default {
   name: "NewTodo",
+
   props: ["addTodo"],
+
   data: function() {
     return {
       todo: ""
     };
   },
+
   methods: {
     onSubmit: function(e) {
       if (this.todo === "") return;
       this.addTodo(this.todo);
+
       const input = e.currentTarget[0];
       input.classList.add("sending");
+      input.addEventListener("animationend", inputAnimation.bind(this));
+
       function inputAnimation() {
         input.classList.remove("sending");
         input.removeEventListener("animationend", inputAnimation);
         return (this.todo = "");
       }
-      input.addEventListener("animationend", inputAnimation.bind(this));
-    }
+    },
   }
 };
 </script>

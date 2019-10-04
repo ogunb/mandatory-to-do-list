@@ -1,11 +1,15 @@
 <template>
   <transition name="listWrapper">
     <div class="listWrapper">
-      <div class="theList" v-bind:class="{ isDone: isDone }" @click="handleIsDone(index)">
+      <div
+        class="theList"
+        :class="{ isDone }"
+        @click="handleIsDone(index)">
         <div>
           <label class="theList__label" for="status">{{ content }}</label>
         </div>
         <input type="checkbox" class="status">
+
         <span class="check">
           <svg width="18px" height="18px" viewBox="0 0 18 18">
             <path
@@ -15,7 +19,10 @@
           </svg>
         </span>
       </div>
-      <delete-todo v-bind="{removeTodo, index}"></delete-todo>
+
+      <delete-todo
+        :removeTodo="removeTodo"
+        :index="index" />
     </div>
   </transition>
 </template>
@@ -25,10 +32,8 @@ import DeleteTodo from "./DeleteTodo.vue";
 
 export default {
   name: "TodoList",
+  components: { DeleteTodo },
   props: ["content", "isDone", "handleIsDone", "removeTodo", "index"],
-  components: {
-    DeleteTodo
-  }
 };
 </script>
 

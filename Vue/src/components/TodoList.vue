@@ -3,28 +3,33 @@
     <todo
       v-for="({content, isDone, id}, index) in list"
       v-bind:key="id"
-      v-bind="{content, isDone, index, handleIsDone, removeTodo}"
+      v-bind="{ content, isDone, index, handleIsDone, removeTodo }"
     />
   </div>
 </template>
 
 <script>
-import todo from "./todo.vue";
+import Todo from "./Todo.vue";
+import { updateTodoStatus, deleteTodo } from '../Services/Todo.service.js';
 
 export default {
   name: "TodoList",
-  components: {
-    todo
-  },
+
   props: ["list"],
+
+  components: { Todo },
+
   methods: {
     handleIsDone: function(index) {
-      this.list[index].isDone = !this.list[index].isDone;
-      localStorage.setItem("vue-todo-list-8888", JSON.stringify(this.list));
+      const todo = this.list[index];
+      todo.isDone = !todo.isDone;
+      updateTodoStatus(todo.id);
     },
+
     removeTodo: function(index) {
+      const todoId = this.list[index].id;
+      deleteTodo(todoId);
       this.list.splice(index, 1);
-      localStorage.setItem("vue-todo-list-8888", JSON.stringify(this.list));
     }
   }
 };
