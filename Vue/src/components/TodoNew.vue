@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: "NewTodo",
+  name: "TodoNew",
 
   props: ["addTodo"],
 

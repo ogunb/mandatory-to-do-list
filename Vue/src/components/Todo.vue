@@ -20,7 +20,7 @@
         </span>
       </div>
 
-      <delete-todo
+      <todo-delete
         :removeTodo="removeTodo"
         :index="index" />
     </div>
@@ -28,11 +28,11 @@
 </template>
 
 <script>
-import DeleteTodo from "./DeleteTodo.vue";
+import TodoDelete from "./TodoDelete.vue";
 
 export default {
   name: "TodoList",
-  components: { DeleteTodo },
+  components: { TodoDelete },
   props: ["content", "isDone", "handleIsDone", "removeTodo", "index"],
 };
 </script>

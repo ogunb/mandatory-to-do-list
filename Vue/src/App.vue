@@ -3,14 +3,14 @@
     <today></today>
     <h4 class="header">To do List</h4>
     <todo-list :list="list" />
-    <new-todo :add-todo="addTodo" />
+    <todo-new :add-todo="addTodo" />
   </div>
 </template>
 
 <script>
 import Today from "./components/Today.vue";
 import TodoList from "./components/TodoList.vue";
-import NewTodo from "./components/NewTodo.vue";
+import TodoNew from "./components/TodoNew.vue";
 
 import { fetchAllTodos, createTodo } from './Services/Todo.service.js'
 
@@ -20,7 +20,7 @@ export default {
   components: {
     Today,
     TodoList,
-    NewTodo
+    TodoNew
   },
 
   data() {

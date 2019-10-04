@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "DeleteTodo",
+  name: "TodoDelete",
   props: ["removeTodo", "index"]
 };
 </script>
