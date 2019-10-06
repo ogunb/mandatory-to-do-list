@@ -1,0 +1,51 @@
+.deleteTodo {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  right: -10px;
+  background: none;
+  border: none;
+  z-index: 50;
+  cursor: pointer;
+}
+.deleteTodo svg {
+  fill: #35495e;
+}
+:host-context(app-todo:hover) .deleteTodo {
+  visibility: visible;
+  opacity: 1;
+  animation: wobble 500ms ease-in-out forwards;
+}
+
+@keyframes wobble {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  1% {
+    visibility: visible;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+  0%,
+  100% {
+    transform: translateX(0%);
+    transform-origin: bottom bottom;
+  }
+  15% {
+    transform: translateX(-5px) rotate(-3.6deg);
+  }
+  30% {
+    transform: translateX(5px) rotate(2.4deg);
+  }
+  60% {
+    transform: translateX(-2px) rotate(2.4deg);
+  }
+  90% {
+    transform: translateX(2px) rotate(2.4deg);
+  }
+}
+

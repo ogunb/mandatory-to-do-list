@@ -1,0 +1,11 @@
+<form class="newTodo" (submit)="createNewTodo()">
+  <input
+    [(ngModel)]="newTodo"
+    name="new-todo"
+    type="text"
+    class="newTodo__input"
+    [ngClass]="{ sending: isCreating }"
+    placeholder="add to do..."
+    autofocus>
+  <button type="submit" class="newTodo__button">+</button>
+</form>

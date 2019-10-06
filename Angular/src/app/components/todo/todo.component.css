@@ -1,0 +1,130 @@
+.listWrapper {
+  position: relative;
+  animation: slideIn 500ms ease-out forwards 1;
+  transform: translateX(-30px);
+  opacity: 0;
+  transition: opacity 150ms ease-in, transform 300ms ease-out;
+  padding: 0 10%;
+}
+.listWrapper-leave-active {
+  animation: slideOut 500ms ease-out forwards 1;
+}
+.theList {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  margin: 30px 0;
+  position: relative;
+}
+.theList,
+.theList__label,
+.check {
+  cursor: pointer;
+}
+.status {
+  visibility: hidden;
+  transform: translate(-9999px);
+}
+.theList__label {
+  position: relative;
+  transition: color 500ms ease-in, transform 300ms ease-in;
+}
+.theList.isDone .theList__label {
+  color: #808080;
+  transform: scale(0.95);
+}
+.theList__label::after {
+  position: absolute;
+  content: "";
+  display: block;
+  background: #333;
+  max-width: 0px;
+  width: 100%;
+  height: 1px;
+  top: 55%;
+  left: 0;
+  transition: max-width 500ms ease-in;
+}
+.theList.isDone .theList__label::after {
+  background: #808080;
+  max-width: 500px;
+}
+.theList.isDone + .check svg {
+  stroke: #4285f4;
+}
+.check {
+  cursor: pointer;
+  position: relative;
+  margin: auto;
+  width: 18px;
+  height: 18px;
+  transform: translate3d(0, 0, 0);
+}
+.check:before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(34, 50, 84, 0.3);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.check svg {
+  position: relative;
+  z-index: 1;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke: #c8ccd4;
+  stroke-width: 1.5;
+  transform: translate3d(0, 0, 0);
+  transition: all 0.2s ease;
+}
+.check svg path {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 0;
+}
+.check svg polyline {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 66;
+}
+.theList:hover .check:before {
+  opacity: 1;
+}
+.theList:hover .check svg {
+  stroke: #dd2131;
+}
+.theList.isDone > .check svg {
+  stroke: #dd2131;
+}
+.theList.isDone > .check svg path {
+  stroke-dashoffset: 60;
+  transition: all 0.3s linear;
+}
+.theList.isDone > .check svg polyline {
+  stroke-dashoffset: 42;
+  transition: all 0.2s linear;
+  transition-delay: 0.15s;
+}
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slideOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+}

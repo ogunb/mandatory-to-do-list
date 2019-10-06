@@ -1,0 +1,11 @@
+<app-today></app-today>
+<h4 class="header">To do List</h4>
+<div class="theLists">
+  <app-todo
+    *ngFor="let todo of todos; index as index; trackBy: trackByTodoId;"
+    [todo]="todo"
+    [index]="index"
+    (deletedTodo)="removeTodoItem($event)"
+  ></app-todo>
+</div>
+<app-todo-new (createdTodo)="getTodos()"></app-todo-new>
