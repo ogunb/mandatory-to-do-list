@@ -1,12 +1,14 @@
 <template>
   <div id="app">
     <today />
+    {{ state.list }}
   </div>
 </template>
 
 <script lang="ts">
 import { createComponent, ref } from '@vue/composition-api'
 import Today from '@/components/Today.vue'
+import { useTodoStore, fetchTodos } from '@/store/Todo'
 
 export default createComponent({
   name: 'app',
@@ -15,7 +17,14 @@ export default createComponent({
     Today
   },
 
-  setup () {}
+  setup () {
+    const todoStore = useTodoStore()
+    fetchTodos()
+
+    return {
+      state: todoStore.state
+    }
+  }
 })
 </script>
 
