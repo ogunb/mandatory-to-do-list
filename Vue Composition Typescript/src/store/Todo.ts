@@ -28,3 +28,15 @@ export async function updateTodoStatus (todoIndex: number) {
     todo.isDone = !todo.isDone
   }
 }
+
+export async function deleteTodo (todoIndex: number) {
+  const todoStore = useTodoStore()
+  const todo = todoStore.state.list[todoIndex]
+
+  try {
+    await http.delete(`/todos/${todo.id}`)
+    todoStore.state.list.splice(todoIndex, 1)
+  } catch (err) {
+    console.error(err)
+  }
+}

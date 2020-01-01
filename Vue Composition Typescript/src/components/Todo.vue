@@ -20,22 +20,25 @@
         </span>
       </div>
 
-      <!-- <todo-delete
-        :removeTodo="removeTodo"
-        :index="index" /> -->
+      <todo-delete @delete="deleteTodo(index)" />
     </div>
   </transition>
 </template>
 
 <script lang="ts">
-// import TodoDelete from './TodoDelete.vue'
 import { createComponent } from '@vue/composition-api'
 import { Todo } from '@/models/todo'
-import { updateTodoStatus } from '@/store/Todo'
+import { updateTodoStatus, deleteTodo } from '@/store/Todo'
+
+import TodoDelete from './TodoDelete.vue'
 
 export default createComponent({
   name: 'TodoList',
-  // components: { TodoDelete },
+
+  components: {
+    TodoDelete
+  },
+
   props: {
     todo: {
       type: Object as () => Todo,
@@ -49,7 +52,8 @@ export default createComponent({
 
   setup () {
     return {
-      updateTodoStatus
+      updateTodoStatus,
+      deleteTodo
     }
   }
 })
