@@ -7,6 +7,7 @@
       :todo="todo"
       :index="index"
     />
+    <todo-add />
   </div>
 </template>
 
@@ -16,13 +17,15 @@ import { useTodoStore, fetchTodos } from '@/store/Todo'
 
 import Today from '@/components/Today.vue'
 import Todo from '@/components/Todo.vue'
+import TodoAdd from '@/components/TodoAdd.vue'
 
 export default createComponent({
   name: 'app',
 
   components: {
     Today,
-    Todo
+    Todo,
+    TodoAdd
   },
 
   setup () {

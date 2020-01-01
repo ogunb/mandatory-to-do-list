@@ -40,3 +40,14 @@ export async function deleteTodo (todoIndex: number) {
     console.error(err)
   }
 }
+
+export async function addTodo (content: string) {
+  const todoStore = useTodoStore()
+
+  try {
+    const { data: newTodo } = await http.post('/todos', { content })
+    todoStore.state.list.push(newTodo)
+  } catch (err) {
+    console.error(err)
+  }
+}
