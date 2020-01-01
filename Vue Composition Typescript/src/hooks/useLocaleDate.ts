@@ -9,7 +9,7 @@ interface dateOptions {
 
 export default function useLocaleDate (date: Ref<Date>, options: dateOptions): Readonly<Ref<string>> {
   const localeDate = computed(() => {
-    return date.value.toLocaleDateString(navigator.language, options)
+    return date.value.toLocaleDateString('en-GB', options)
   })
 
   return localeDate
