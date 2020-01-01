@@ -16,3 +16,15 @@ export async function fetchTodos () {
 
   return todoStore.state.list
 }
+
+export async function updateTodoStatus (todoIndex: number) {
+  const todoStore = useTodoStore()
+  const todo = todoStore.state.list[todoIndex]
+
+  try {
+    todo.isDone = !todo.isDone
+    await http.put(`/todos/${todo.id}`)
+  } catch (err) {
+    todo.isDone = !todo.isDone
+  }
+}

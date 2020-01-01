@@ -1,20 +1,28 @@
 <template>
   <div id="app">
     <today />
-    {{ state.list }}
+    <todo
+      v-for="(todo, index) of state.list"
+      :key="todo.id"
+      :todo="todo"
+      :index="index"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { createComponent, ref } from '@vue/composition-api'
-import Today from '@/components/Today.vue'
 import { useTodoStore, fetchTodos } from '@/store/Todo'
+
+import Today from '@/components/Today.vue'
+import Todo from '@/components/Todo.vue'
 
 export default createComponent({
   name: 'app',
 
   components: {
-    Today
+    Today,
+    Todo
   },
 
   setup () {
